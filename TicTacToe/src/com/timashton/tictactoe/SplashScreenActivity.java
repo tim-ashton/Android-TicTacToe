@@ -89,7 +89,7 @@ public class SplashScreenActivity extends Activity{
         splashTitle = (ImageView)findViewById(R.id.splash_title);
         splashTitle.setImageResource(R.drawable.title);
         splashTitle.startAnimation(titleFadeOut);
-        splashTitle.setVisibility(View.INVISIBLE);  //we dont want this to reappear after it is faded out
+        splashTitle.setVisibility(View.INVISIBLE);  // don't want this to reappear after it is faded out
 
         //crossOne Image view to be animated
         crossOne = new ImageView(this);
@@ -119,11 +119,11 @@ public class SplashScreenActivity extends Activity{
          * and destroy this splash screen after the 
          * SPLASH_TIME_OUT time amount.
          */
-        new Handler().postDelayed(new Runnable() 
-        {
+        new Handler().postDelayed(new Runnable(){
+        	
             @Override
-            public void run() 
-            {
+            public void run(){
+            	
             	Log.i("SplashScreenActivity", "Running animation thread");
                 Intent i = new Intent(SplashScreenActivity.this, MenuActivity.class);
                 startActivity(i);
@@ -132,7 +132,6 @@ public class SplashScreenActivity extends Activity{
             	finish();
         	}
     	}, SPLASH_TIME_OUT);
-    
     }	 
 
 

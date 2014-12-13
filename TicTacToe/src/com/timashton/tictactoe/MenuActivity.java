@@ -18,8 +18,7 @@ public class MenuActivity
 extends Activity 
 implements View.OnClickListener, 
 MenuDialogFragment.PlayerTypeListener,
-MenuDialogFragment.DifficultyListener
-{
+MenuDialogFragment.DifficultyListener{
 
 	private static final String PLAYER_DIALOG_TAG = "PlayerDialog";
 	private static final String DIFFICULTY_DIALOG_TAG = "DifficultyDialog";
@@ -37,7 +36,7 @@ MenuDialogFragment.DifficultyListener
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.i("MenuActivity", "Enter: onCreate().");
+		Log.i(this.getClass().getName(), "Enter: onCreate().");
 
 		//set layout to main menu layout after splash screen runs
 		setContentView(R.layout.menu_activity);
@@ -65,6 +64,12 @@ MenuDialogFragment.DifficultyListener
 		playButton.setOnClickListener(this);	
 	}
 
+	@Override
+	protected void onResume(){
+		super.onResume();  // Always call the superclass method first
+		Log.i(this.getClass().getName(), "++ ON resume ++");
+		resetMenu();
+	}
 	/*
 	 * public void onDifficultyDialogClick(DialogFragment dialog, int which)
 	 * 
@@ -192,9 +197,6 @@ MenuDialogFragment.DifficultyListener
 
 					//start the game
 					startActivity(launchIntent);
-
-					//clear the menu for the return
-					resetMenu();
 
 					break;
 				case R.id.reset_button:
