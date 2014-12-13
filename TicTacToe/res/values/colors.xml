@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <color name="white">#ffffffff</color>
+    <color name="black">#ff000000</color>
+    
+    <color name="ivory">#fffffff0</color>
+    <color name="transparent_grey">#80888888 </color>
+    
+    <!-- reds -->
+    <color name="red">#ffff0000</color>
+    
+    <!-- greens -->
+    <color name="green">#ff00ff00</color>
+    <color name="cobolt_green">#ff3D9140</color>
+    <color name="very_dark_green">#ff000b00</color>
+    
+    <!-- Blues -->
+    <color name="cobolt">#ff3D59AB</color>
+    
+    
+    <!--  Clear -->
+	<color name="transparent">#00000000</color>
+</resources>

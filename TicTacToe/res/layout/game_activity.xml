@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/game_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/city_green_predator" >
+
+    <!--  
+	<TableLayout
+	    android:id="@+id/game_board"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_centerHorizontal="true"
+	    android:layout_centerVertical="true"
+	    android:layout_gravity="center"
+	    android:background="@color/white" >
+    	
+	    <TableRow
+	        android:id="@+id/row_1"
+	        android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:background="@color/cobolt" >
+    		
+			<ImageView
+			    android:id="@+id/square_0"
+			    android:contentDescription="@string/game_board_square"
+			    android:layout_width="85dp"
+			    android:layout_height="85dp"
+			     />
+	        			
+			<ImageView
+			    android:id="@+id/square_1"
+			    android:contentDescription="@string/game_board_square"
+			    android:layout_width="85dp"
+			    android:layout_height="85dp"
+			     />
+	        						
+			<ImageView
+			    android:id="@+id/square_2"
+			    android:contentDescription="@string/game_board_square"
+			    android:layout_width="85dp"
+			    android:layout_height="85dp"
+			     />
+    		
+	        
+	    </TableRow>
+	    
+	   	<TableRow
+	        android:id="@+id/row_2"
+	        android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:background="@color/cobolt" >   
+    		
+			<ImageView
+			    android:id="@+id/square_3"
+			    android:contentDescription="@string/game_board_square"
+			    android:layout_width="85dp"
+			    android:layout_height="85dp"
+			     />
+	        			
+			<ImageView
+			    android:id="@+id/square_4"
+			    android:contentDescription="@string/game_board_square"
+			    android:layout_width="85dp"
+			    android:layout_height="85dp"
+			     />
+	        						
+			<ImageView
+			    android:id="@+id/square_5"
+			    android:contentDescription="@string/game_board_square"
+			    android:layout_width="85dp"
+			    android:layout_height="85dp"
+			     />
+    		
+	   	    
+	    </TableRow>
+	    
+		<TableRow
+	        android:id="@+id/row_3"
+	        android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:background="@color/cobolt" >
+
+			<ImageView
+			    android:id="@+id/square_6"
+			    android:contentDescription="@string/game_board_square"
+			    android:layout_width="85dp"
+			    android:layout_height="85dp"
+			     />
+	        			
+			<ImageView
+			    android:id="@+id/square_7"
+			    android:contentDescription="@string/game_board_square"
+			    android:layout_width="85dp"
+			    android:layout_height="85dp"
+			     />
+	        						
+			<ImageView
+			    android:id="@+id/square_8"
+			    android:contentDescription="@string/game_board_square"
+			    android:layout_width="85dp"
+			    android:layout_height="85dp"
+			     />
+		    
+	    </TableRow>
+	</TableLayout>
+	 -->
+</RelativeLayout>

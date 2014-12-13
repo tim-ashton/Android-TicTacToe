@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <!-- must set image width to match the height manually :( -->
+
+    <ImageView
+        android:id="@+id/selector_button_image"
+        android:layout_width="80dp"
+        android:layout_height="fill_parent"
+        android:padding="5dp"
+        android:src="@drawable/ic_menu_help_holo_light" >
+    </ImageView>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignTop="@+id/selector_button_image"
+        android:layout_toEndOf="@+id/selector_button_image"
+        android:layout_toRightOf="@+id/selector_button_image" >
+
+        <TextView
+            android:id="@+id/button_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button Title"
+            android:textColor="@color/ivory"
+            android:textSize="30sp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/button_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/button_title"
+            android:layout_alignStart="@+id/button_title"
+            android:layout_below="@+id/button_title"
+            android:text="Button Subtitle"
+            android:textColor="@color/ivory" >
+        </TextView>
+
+        <!-- Manually set the size of the checkbox -->
+        <ImageView
+            android:id="@+id/item_set_image"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/btn_check_off_focused_holo_light" >
+        </ImageView>
+    </RelativeLayout>
+
+</RelativeLayout>

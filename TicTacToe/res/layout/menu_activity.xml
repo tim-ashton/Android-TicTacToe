@@ -1,0 +1,115 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_menu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/city_green_predator" >
+
+    <RelativeLayout
+        android:id="@+id/menu_title_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" >
+
+        <TextView
+            android:id="@+id/menu_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/desc_menu_title"
+            android:gravity="center_horizontal"
+            android:text="@string/menu_title_string"
+            android:textColor="@color/ivory"
+            android:textSize="50sp"
+            android:typeface="normal" />
+
+        <TextView
+            android:id="@+id/menu_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/menu_title"
+            android:layout_alignLeft="@+id/menu_title"
+            android:layout_alignRight="@+id/menu_title"
+            android:layout_alignStart="@+id/menu_title"
+            android:layout_below="@+id/menu_title"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/desc_menu_subtitle"
+            android:text="@string/menu_subtitle_string"
+            android:textColor="@color/ivory"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" >
+
+        <include
+            android:id="@+id/player_sel_button"
+            android:layout_width="280dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            layout="@layout/menu_select_button"
+            android:background="@color/transparent" />
+
+        <include
+            android:id="@+id/difficulty_sel_button"
+            android:layout_width="280dp"
+            android:layout_height="80dp"
+            android:layout_below="@+id/player_sel_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            layout="@layout/menu_select_button"
+            android:background="@color/transparent" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/action_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp" >
+
+        <Button
+            android:id="@+id/reset_button"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_toLeftOf="@+id/playas_button_divider"
+            android:layout_toStartOf="@+id/playas_button_divider"
+            android:text="Reset"
+            android:textColor="@color/transparent_grey"
+            android:textSize="30sp" />
+
+        <View
+            android:id="@+id/playas_button_divider"
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:background="?android:attr/dividerVertical" />
+
+        <Button
+            android:id="@+id/play_button"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_toEndOf="@+id/playas_button_divider"
+            android:layout_toRightOf="@+id/playas_button_divider"
+            android:text="Play"
+            android:textColor="@color/transparent_grey"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+</RelativeLayout>
