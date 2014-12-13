@@ -1,7 +1,7 @@
 Android-TicTacToe
 =================
 
-Simple Tic Tac Toe game for Android
+Tic Tac Toe game for Android
 
 
 This application contains 3 activities:
