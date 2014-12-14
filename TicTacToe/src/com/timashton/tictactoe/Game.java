@@ -152,6 +152,25 @@ public class Game implements Serializable{
 		return player;
 	}
 	
+	/*public boolean boardEmpty()
+	 * 
+     * Returns true if the game board is empty
+     */
+     public boolean boardEmpty()
+    {
+    	for(int i = 0; i < Constants.BOARD_SIZE; i++)
+    	{
+    		for(int j = 0; j < Constants.BOARD_SIZE; j++)
+    		{
+    			if (gameBoard[i][j] != BoardSquaresState.EMPTY)
+    				return false;
+    		}
+    	}
+    	
+    	//if we make it out of the loop then the board must be empty
+    	return true;
+    }
+	
 	/*
 	 * Returns the human player setting -(nought or cross)
 	 */

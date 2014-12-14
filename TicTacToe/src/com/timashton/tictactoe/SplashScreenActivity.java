@@ -45,7 +45,7 @@ public class SplashScreenActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) 
     {
-    	Log.i("SplashScreenActivity", "Enter: OnCreate()");
+    	Log.i(this.getClass().getName(), "Enter: OnCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_activity);
         
@@ -124,7 +124,7 @@ public class SplashScreenActivity extends Activity{
             @Override
             public void run(){
             	
-            	Log.i("SplashScreenActivity", "Running animation thread");
+            	Log.i(this.getClass().getName(), "Running animation thread");
                 Intent i = new Intent(SplashScreenActivity.this, MenuActivity.class);
                 startActivity(i);
  
@@ -141,7 +141,7 @@ public class SplashScreenActivity extends Activity{
 	@Override
 	public void onPause()
 	{
-		Log.i("SplashScreenActivity", "Enter: onPause(). Calling finish() to terminate splash screen.");
+		Log.i(this.getClass().getName(), "Enter: onPause(). Calling finish() to terminate splash screen.");
 		super.onPause();
 		finish();
     }

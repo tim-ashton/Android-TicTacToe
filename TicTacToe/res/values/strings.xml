@@ -3,69 +3,66 @@
 
     <string name="app_name">TicTacToe</string>
 
-    
     <!-- Splash screen -->
     <string name="desc_splash_title">Splash Screen Title</string>
     <string name="desc_splash_cross_1">Splash Screen Cross1</string>
     <string name="desc_splash_nought_1">Splash Screen Nought1</string>
     <string name="desc_splash_cross_3">Splash Screen Cross3</string>
-    
-    
-    
-    
+
     <!-- Main menu -->
     <string name="desc_menu_title">Menu Title</string>
     <string name="menu_title_string">Game Menu</string>
     <string name="desc_menu_subtitle">Menu Subtitle</string>
     <string name="menu_subtitle_string">New Game Setup</string>
-    
     <string name="desc_playing_as">Playing As</string>
-    
     <string name="null_dialog_title">null</string>
-    
+
     <!-- items for the select play as menu -->
     <string name="play_as_button">Select\nO or X</string>
     <string name="play_as_selected">Player is:</string>
     <string name="select_player_dialog_title">Select X or O</string>
+
     <string-array name="play_as">
-        <item >Play as Cross</item>
-        <item >Play as Nought</item>
-        <item >Random Select</item>
+        <item>Play as Cross</item>
+        <item>Play as Nought</item>
+        <item>Random Select</item>
     </string-array>
-    
-   
+
     <!-- Items in the Select Difficulty Menu -->
     <string name="difficulty_button">Select Difficulty</string>
     <string name="difficulty_selected">Difficulty:</string>
     <string name="select_difficulty_dialog_title">Select Difficulty</string>
+
     <string-array name="difficulties">
         <item>Easy</item>
         <item>Medium</item>
         <item>Impossible</item>
     </string-array>
-    
+
     <string name="desc_difficulty_selected">TODO</string>
 
     <!-- Alert strings -->
     <string name="player_alert">Select O or X</string>
     <string name="difficulty_alert">Select a Difficulty</string>
-    
-    
+
     <!-- old stuff -->
     <string name="continue_game_button">Continue Game</string>
-	<string name="new_game_button_X">Start Game</string>
-    
+    <string name="new_game_button_X">Start Game</string>
 
-	
     <!-- Game Activity items -->
     <string name="game_board_square">Game Board Square</string>
     <string name="you_win">You Win!</string>
     <string name="you_lose">You Lose</string>
     <string name="game_drawn">Game Drawn</string>
+
     <string-array name="end_game_options">
         <item>Retry ?</item>
         <item>Exit to Main Menu</item>
-
     </string-array>
+
+    <string name="game_title_image">Image in game title bar</string>
+    <string name="game_title_player_turn_content">Display the current players turn</string>
+    <string name="game_ai_turn">A.I Turn</string>
+    <string name="game_your_turn">Your Turn</string>
 
 </resources>

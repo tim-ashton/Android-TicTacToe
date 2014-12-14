@@ -14,23 +14,21 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
+
 
 import com.timashton.tictactoe.enums.*;
 
 public class GameActivity extends Activity 
-implements ListDialogFragment.listDialogListener
-{
+implements ListDialogFragment.listDialogListener{
 	public static final int	NO_PLAYER = 0;
 	public static final int CROSS = 0;
 	public static final int NOUGHT = 0;
@@ -46,19 +44,20 @@ implements ListDialogFragment.listDialogListener
 	// check if device was turned for re-creating activity
 	private boolean deviceturned;
 
-	// a tablelayout to hold the board squares
-	private TableLayout board;
-
 	//the computer player
 	private AIPlayer ai;
 
 	private boolean isGameOver;
+	
+	private TextView playerTurn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_activity);
-		Log.i("game", "+++ ON CREATE GAME +++");
+		Log.i(this.getClass().getName(), "+++ ON CREATE GAME +++");
+		
+		playerTurn = (TextView)findViewById(R.id.game_title_player_turn);
 
 		if(savedInstanceState == null)
 			deviceturned = false;
@@ -72,16 +71,16 @@ implements ListDialogFragment.listDialogListener
 	@Override
 	public void onStart(){
 		super.onStart();
-		Log.e("game activity", "onStart called - Reading game data from file");
+		Log.i(this.getClass().getName(), "onStart called - Reading game data from file");
 		loadGame();
-		Log.e("game activity", "onStart exiting - game data retrieved from file");
+		Log.e(this.getClass().getName(), "onStart exiting - game data retrieved from file");
 	}
 
 
 	@Override
 	protected void onResume(){
 		super.onResume();  // Always call the superclass method first
-		Log.i("game", "++ ON resume game ++");
+		Log.i(this.getClass().getName(), "++ ON resume game ++");
 
 		if(deviceturned == false)
 		{
@@ -100,6 +99,13 @@ implements ListDialogFragment.listDialogListener
 			humanPlayer = 
 					(BoardSquaresState) recievedBundle.getSerializable(
 							Constants.HUMAN_PLAYER);
+			
+			if(humanPlayer == BoardSquaresState.CROSS){
+				playerTurn.setText(R.string.game_your_turn);
+			}
+			else{
+				playerTurn.setText(R.string.game_ai_turn);
+			}
 
 			//get the computer player passed from the menu
 			computerPlayer = (BoardSquaresState) recievedBundle.getSerializable(
@@ -117,9 +123,9 @@ implements ListDialogFragment.listDialogListener
 	@Override
 	public void onStop(){
 		super.onStop();
-		Log.e("game activity", "onStop called - writing game data to file");
+		Log.e(this.getClass().getName(), "onStop called - writing game data to file");
 		saveGame();
-		Log.e("game activity", "onStop exiting - game data written to file");
+		Log.e(this.getClass().getName(), "onStop exiting - game data written to file");
 	}
 
 
@@ -136,45 +142,67 @@ implements ListDialogFragment.listDialogListener
 	}
 
 
+	/* private void init()
+	 * 
+	 * Initializes a new game.
+	 */
 	private void init(){
-
+		Log.i(this.getClass().getName(), "Enter: init()");
 		isGameOver = false;
 		ai = new AIPlayer(game.getComputerPlayer(), game.getHumanPlayer(), game.getDifficulty());
 		setUpGameBoard();
-		//addListenersToBoard();
-		if(game.getComputerPlayer() == BoardSquaresState.CROSS)	{
+
+		if((game.getComputerPlayer() == BoardSquaresState.CROSS) && game.boardEmpty())	{
 			makeFirstAIMove();
+			playerTurn.setText(R.string.game_your_turn);
 		}
 	}
 
-	/*
+	/* private void fireComputerTurn()
+	 * 
 	 * Get a move from the AI for the computer
 	 * Assign the move to the gameboard and
 	 * Assign the computer player's image (X or O) to the screen
 	 * and check if the computer has won the game.
 	 */
 	private void fireComputerTurn()	{
-		//get the AI move for this turn
-		int[] bestMove = ai.move(game);
+		Log.i(this.getClass().getName(), "Enter: fireComputerTurn()");
 
-		//set the state of the gameboard to the computer player's type
-		game.setStateOfSquare(bestMove[0], bestMove[1], game.getComputerPlayer());
+		final int[] bestMove = ai.move(game);
+		Random rand = new Random();
+		int computerDelay =  rand.nextInt(2000) + 500;
 
-		//assign the image to the game board depending on computer Playertype
-		if(game.getComputerPlayer() == BoardSquaresState.CROSS){
-			gameSquares[bestMove[0]][bestMove[1]].setImageResource(R.drawable.cross_1);
-		}
-		else{
-			gameSquares[bestMove[0]][bestMove[1]].setImageResource(R.drawable.nought_1);
-		}
+		/*
+		 * Bind a handler to this thread so that the computer
+		 * pauses for a moment before taking a turn.
+		 */
+		new Handler().postDelayed(new Runnable(){
 
-		//check if the computer player has won the game with this move
-		checkForEndGame(game.getComputerPlayer(), bestMove[0], bestMove[1]);
+			@Override
+			public void run(){
+				Log.i(this.getClass().getName(), "fireComputerTurn() - Delaying computer turn.");
+				
+				playerTurn.setText(R.string.game_your_turn);
+				//set the state of the gameboard to the computer player's type
+				game.setStateOfSquare(bestMove[0], bestMove[1], game.getComputerPlayer());
+
+				//assign the image to the game board depending on computer Playertype
+				if(game.getComputerPlayer() == BoardSquaresState.CROSS){
+					gameSquares[bestMove[0]][bestMove[1]].setImageResource(R.drawable.cross_1);
+				}
+				else{
+					gameSquares[bestMove[0]][bestMove[1]].setImageResource(R.drawable.nought_1);
+				}
+				
+				//check if the computer player has won the game with this move
+				checkForEndGame(game.getComputerPlayer(), bestMove[0], bestMove[1]);
+			}
+		}, computerDelay);
 	}
 
 	// return true if the game is finished
 	private boolean checkForEndGame(BoardSquaresState currentPlayer, int rowNumber, int columnNumber){
-
+		Log.i(this.getClass().getName(), "Enter: checkForEndGame()");
 		int endGameDialogTitle = 0;
 		BoardSquaresState winner = BoardSquaresState.EMPTY;
 		BoardSquaresState result = game.getWinner(currentPlayer, rowNumber, columnNumber);
@@ -216,34 +244,27 @@ implements ListDialogFragment.listDialogListener
 		return isGameOver;
 	}
 
+	/* private void setUpGameBoard()
+	 * 
+	 * fill game square with the declared square from game_activity.xml and
+	 * attaches onclick listener to each.
+	 */
 	private void setUpGameBoard(){
-
+		Log.i(this.getClass().getName(), "Enter: setUpGameBoard()");
+		
 		//initialize the gameSquares array to size of board
 		gameSquares = new ImageView[Constants.BOARD_SIZE][Constants.BOARD_SIZE];
-
-		//init the the TableLayout
-		board = new TableLayout(this);
-		board.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		board.setGravity(Gravity.CENTER);
-		board.setBackgroundColor(Color.argb(0, 0, 0, 0)); //transparent
-
-		//get the size of each square depending on the boardsize
-		//TODO
-		int squareSize = dpToPx(90);
+		
+		int squaresCount = 0;
 
 		for(int i = 0; i < Constants.BOARD_SIZE; i++){
-			TableRow tr = new TableRow(this);
-			tr.setBackgroundColor(Color.argb(0, 0, 0, 0));//transparent
-			tr.setLayoutParams(new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-			for(int j = 0; j < Constants.BOARD_SIZE; j++){
-				//set up the area for each nought or cross 
-				gameSquares[i][j] = new ImageView(this); // for the nought or cross
-				TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(squareSize, squareSize); //size of each nought or cross
-				gameSquares[i][j].setLayoutParams(layoutParams);
-				gameSquares[i][j].setPadding(20, 20, 20, 20); //TODO
-				setSquareBackground(i, j);
-
+			for(int j = 0; j < Constants.BOARD_SIZE; j++){ 
+				
+				//attach each gameSquare to the declared imageview
+				String squareID = "square_" + squaresCount++;
+				int resID = getResources().getIdentifier(squareID, "id", getPackageName());
+				gameSquares[i][j] = (ImageView)findViewById(resID);
+				
 				//assign drawables depending on state
 				if(game.getStateOfSquare(i, j) == BoardSquaresState.EMPTY){
 					gameSquares[i][j].setImageResource(android.R.color.transparent);
@@ -254,21 +275,11 @@ implements ListDialogFragment.listDialogListener
 				else if(game.getStateOfSquare(i, j) == BoardSquaresState.NOUGHT){
 					gameSquares[i][j].setImageResource(R.drawable.nought_1);
 				}
-
+				
 				//add the onclick listener for the game squares
 				addOnClickListenerToSquare(i, j);
-
-				//add the view to the row
-				tr.addView(gameSquares[i][j]);
 			}
-			board.addView(tr);
 		}
-
-		this.addContentView(board, 
-				new TableLayout.LayoutParams(
-						TableLayout.LayoutParams.MATCH_PARENT, 
-						TableLayout.LayoutParams.MATCH_PARENT)
-				);
 	}
 
 	/*
@@ -289,6 +300,7 @@ implements ListDialogFragment.listDialogListener
 					// human player's player type
 					if(game.getHumanPlayer() == BoardSquaresState.CROSS){
 						gameSquares[i][j].setImageResource(R.drawable.cross_1);
+						
 					}
 					else{
 						gameSquares[i][j].setImageResource(R.drawable.nought_1);
@@ -302,62 +314,10 @@ implements ListDialogFragment.listDialogListener
 
 					// fire a computer turn after the player has gone
 					fireComputerTurn();
+					playerTurn.setText(R.string.game_ai_turn);
 				}
 			}	
 		});
-	}
-
-	/*
-	 * Convert a Density-independent pixels to a pixel value
-	 * Can enter dp measurements for different screens and get 
-	 * a value back in pixels for applying dynamic sizes
-	 */
-	private int dpToPx(int dp){
-		float density = getApplicationContext().getResources().getDisplayMetrics().density;
-		return Math.round((float)dp * density);
-	}
-
-
-	/*
-	 * Set a particular square with the appropriate background image
-	 * depending on the position of the square
-	 */
-	//TODO - move this to layout declaration
-	private void setSquareBackground(int i, int j){
-		if(i == 0) //top row
-		{
-			if(j == 0){  //top left
-				gameSquares[i][j].setBackgroundResource(R.drawable.sq_top_left);
-			}
-			else if(j == (Constants.BOARD_SIZE - 1)){  //top right
-				gameSquares[i][j].setBackgroundResource(R.drawable.sq_top_right);
-			}
-			else{
-				gameSquares[i][j].setBackgroundResource(R.drawable.sq_top_center);
-			}
-		}
-		else if(i == (Constants.BOARD_SIZE - 1)){ //bottom row 
-			if(j == 0){ //bottom left
-				gameSquares[i][j].setBackgroundResource(R.drawable.sq_bottom_left);
-			}
-			else if(j == (Constants.BOARD_SIZE - 1)){ //bottom right
-				gameSquares[i][j].setBackgroundResource(R.drawable.sq_bottom_right);
-			}
-			else{
-				gameSquares[i][j].setBackgroundResource(R.drawable.sq_bottom_center);
-			}
-		}
-		else{
-			if(j == 0){ // left
-				gameSquares[i][j].setBackgroundResource(R.drawable.sq_left_center);
-			}
-			else if(j == (Constants.BOARD_SIZE - 1)){//right
-				gameSquares[i][j].setBackgroundResource(R.drawable.sq_right_center);
-			}
-			else { // somewhere in the middle of the board
-				gameSquares[i][j].setBackgroundResource(R.drawable.sq_center);
-			}
-		}
 	}
 
 	/*
@@ -369,7 +329,7 @@ implements ListDialogFragment.listDialogListener
 		for(int i = 0; i < Constants.BOARD_SIZE; i++){
 			for(int j = 0; j < Constants.BOARD_SIZE; j++){
 				gameSquares[i][j].setImageResource(0);
-				gameSquares[i][j].setBackgroundResource(0);
+				//gameSquares[i][j].setBackgroundResource(0);
 			}
 		}
 		game.resetBoard();
@@ -462,10 +422,10 @@ implements ListDialogFragment.listDialogListener
 				ObjectInputStream ois = new ObjectInputStream(gameBoardIn);
 				game = (Game)ois.readObject();
 				ois.close();
-				Log.i("game", "++ We have read save data from file ++");
+				Log.i(this.getClass().getName(), "++ We have read save data from file ++");
 			} 
 			catch (IOException e) 	{
-				Log.e("game activity", "Unable to read from file:");
+				Log.e(this.getClass().getName(), "Unable to read from file:");
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 
