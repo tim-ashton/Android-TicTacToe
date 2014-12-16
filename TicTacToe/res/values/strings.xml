@@ -61,8 +61,9 @@
     </string-array>
 
     <string name="game_title_image">Image in game title bar</string>
-    <string name="game_title_player_turn_content">Display the current players turn</string>
-    <string name="game_ai_turn">A.I Turn</string>
-    <string name="game_your_turn">Your Turn</string>
+    <string name="game_title_player">Display the current players turn</string>
+    <string name="game_player_image">Image of nought or cross representing current player</string>
+    <string name="game_player_description">Player</string>
+
 
 </resources>

@@ -20,7 +20,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,16 +47,16 @@ implements ListDialogFragment.listDialogListener{
 	private AIPlayer ai;
 
 	private boolean isGameOver;
-	
-	private TextView playerTurn;
+
+	private ImageView playerImage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_activity);
 		Log.i(this.getClass().getName(), "+++ ON CREATE GAME +++");
-		
-		playerTurn = (TextView)findViewById(R.id.game_title_player_turn);
+
+		playerImage = (ImageView)findViewById(R.id.game_title_player_icon);
 
 		if(savedInstanceState == null)
 			deviceturned = false;
@@ -99,13 +98,6 @@ implements ListDialogFragment.listDialogListener{
 			humanPlayer = 
 					(BoardSquaresState) recievedBundle.getSerializable(
 							Constants.HUMAN_PLAYER);
-			
-			if(humanPlayer == BoardSquaresState.CROSS){
-				playerTurn.setText(R.string.game_your_turn);
-			}
-			else{
-				playerTurn.setText(R.string.game_ai_turn);
-			}
 
 			//get the computer player passed from the menu
 			computerPlayer = (BoardSquaresState) recievedBundle.getSerializable(
@@ -117,7 +109,7 @@ implements ListDialogFragment.listDialogListener{
 					computerPlayer,
 					(Difficulty) recievedBundle.getSerializable(Constants.DIFFICULTY));
 		}
-		init();   
+		init();
 	}
 
 	@Override
@@ -127,7 +119,6 @@ implements ListDialogFragment.listDialogListener{
 		saveGame();
 		Log.e(this.getClass().getName(), "onStop exiting - game data written to file");
 	}
-
 
 	/*
 	 * Handle if back button is pressed during gameplay
@@ -148,13 +139,20 @@ implements ListDialogFragment.listDialogListener{
 	 */
 	private void init(){
 		Log.i(this.getClass().getName(), "Enter: init()");
+
+		if(game.getHumanPlayer() == BoardSquaresState.CROSS){
+			playerImage.setImageResource(R.drawable.cross_2);
+		}
+		else{
+			playerImage.setImageResource(R.drawable.nought_2);
+		}
+
 		isGameOver = false;
 		ai = new AIPlayer(game.getComputerPlayer(), game.getHumanPlayer(), game.getDifficulty());
 		setUpGameBoard();
 
 		if((game.getComputerPlayer() == BoardSquaresState.CROSS) && game.boardEmpty())	{
 			makeFirstAIMove();
-			playerTurn.setText(R.string.game_your_turn);
 		}
 	}
 
@@ -169,35 +167,21 @@ implements ListDialogFragment.listDialogListener{
 		Log.i(this.getClass().getName(), "Enter: fireComputerTurn()");
 
 		final int[] bestMove = ai.move(game);
-		Random rand = new Random();
-		int computerDelay =  rand.nextInt(2000) + 500;
 
-		/*
-		 * Bind a handler to this thread so that the computer
-		 * pauses for a moment before taking a turn.
-		 */
-		new Handler().postDelayed(new Runnable(){
 
-			@Override
-			public void run(){
-				Log.i(this.getClass().getName(), "fireComputerTurn() - Delaying computer turn.");
-				
-				playerTurn.setText(R.string.game_your_turn);
-				//set the state of the gameboard to the computer player's type
-				game.setStateOfSquare(bestMove[0], bestMove[1], game.getComputerPlayer());
+		//set the state of the gameboard to the computer player's type
+		game.setStateOfSquare(bestMove[0], bestMove[1], game.getComputerPlayer());
 
-				//assign the image to the game board depending on computer Playertype
-				if(game.getComputerPlayer() == BoardSquaresState.CROSS){
-					gameSquares[bestMove[0]][bestMove[1]].setImageResource(R.drawable.cross_1);
-				}
-				else{
-					gameSquares[bestMove[0]][bestMove[1]].setImageResource(R.drawable.nought_1);
-				}
-				
-				//check if the computer player has won the game with this move
-				checkForEndGame(game.getComputerPlayer(), bestMove[0], bestMove[1]);
-			}
-		}, computerDelay);
+		//assign the image to the game board depending on computer Playertype
+		if(game.getComputerPlayer() == BoardSquaresState.CROSS){
+			gameSquares[bestMove[0]][bestMove[1]].setImageResource(R.drawable.cross_1);
+		}
+		else{
+			gameSquares[bestMove[0]][bestMove[1]].setImageResource(R.drawable.nought_1);
+		}
+
+		//check if the computer player has won the game with this move
+		checkForEndGame(game.getComputerPlayer(), bestMove[0], bestMove[1]);
 	}
 
 	// return true if the game is finished
@@ -251,20 +235,20 @@ implements ListDialogFragment.listDialogListener{
 	 */
 	private void setUpGameBoard(){
 		Log.i(this.getClass().getName(), "Enter: setUpGameBoard()");
-		
+
 		//initialize the gameSquares array to size of board
 		gameSquares = new ImageView[Constants.BOARD_SIZE][Constants.BOARD_SIZE];
-		
+
 		int squaresCount = 0;
 
 		for(int i = 0; i < Constants.BOARD_SIZE; i++){
 			for(int j = 0; j < Constants.BOARD_SIZE; j++){ 
-				
+
 				//attach each gameSquare to the declared imageview
 				String squareID = "square_" + squaresCount++;
 				int resID = getResources().getIdentifier(squareID, "id", getPackageName());
 				gameSquares[i][j] = (ImageView)findViewById(resID);
-				
+
 				//assign drawables depending on state
 				if(game.getStateOfSquare(i, j) == BoardSquaresState.EMPTY){
 					gameSquares[i][j].setImageResource(android.R.color.transparent);
@@ -275,7 +259,7 @@ implements ListDialogFragment.listDialogListener{
 				else if(game.getStateOfSquare(i, j) == BoardSquaresState.NOUGHT){
 					gameSquares[i][j].setImageResource(R.drawable.nought_1);
 				}
-				
+
 				//add the onclick listener for the game squares
 				addOnClickListenerToSquare(i, j);
 			}
@@ -300,7 +284,7 @@ implements ListDialogFragment.listDialogListener{
 					// human player's player type
 					if(game.getHumanPlayer() == BoardSquaresState.CROSS){
 						gameSquares[i][j].setImageResource(R.drawable.cross_1);
-						
+
 					}
 					else{
 						gameSquares[i][j].setImageResource(R.drawable.nought_1);
@@ -314,7 +298,6 @@ implements ListDialogFragment.listDialogListener{
 
 					// fire a computer turn after the player has gone
 					fireComputerTurn();
-					playerTurn.setText(R.string.game_ai_turn);
 				}
 			}	
 		});

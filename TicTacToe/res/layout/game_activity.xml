@@ -7,117 +7,127 @@
 
     <RelativeLayout
         android:id="@+id/game_title"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/game_board"
-        android:layout_centerHorizontal="true" >
+        android:layout_width="wrap_content"
+        android:layout_height="450dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center" >
 
         <ImageView
             android:id="@+id/game_title_image"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_alignParentBottom="true"
+            android:layout_width="135dp"
+            android:layout_height="135dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:background="@drawable/title"
             android:contentDescription="@string/game_title_image" />
 
+        <ImageView
+            android:id="@+id/game_title_player_icon"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_above="@+id/game_title_player"
+            android:layout_toRightOf="@+id/game_title_image"
+            android:layout_toEndOf="@+id/game_title_image"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:contentDescription="@string/game_player_image" />
+
         <TextView
-            android:id="@+id/game_title_player_turn"
+            android:id="@+id/game_title_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/game_board"
+            android:layout_toRightOf="@+id/game_title_image"
+            android:layout_toEndOf="@+id/game_title_image"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:contentDescription="@string/game_title_player"
+            android:text="@string/game_player_description"
+            android:textColor="@color/ivory"
+            android:textSize="25sp" />
+
+        <TableLayout
+            android:id="@+id/game_board"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_toEndOf="@+id/game_title_image"
-            android:layout_toRightOf="@+id/game_title_image"
-            android:contentDescription="@string/game_title_player_turn_content"
-            android:freezesText="true"
-            android:textColor="@color/ivory"
-            android:textSize="25sp" />
+            android:background="@android:color/transparent"
+            android:paddingTop="40dp" >
+
+            <TableRow
+                android:id="@+id/row_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:id="@+id/square_0"
+                    style="@style/board_square"
+                    android:background="@drawable/sq_top_left"
+                    android:contentDescription="@string/game_board_square" />
+
+                <ImageView
+                    android:id="@+id/square_1"
+                    style="@style/board_square"
+                    android:background="@drawable/sq_top_center"
+                    android:contentDescription="@string/game_board_square" />
+
+                <ImageView
+                    android:id="@+id/square_2"
+                    style="@style/board_square"
+                    android:background="@drawable/sq_top_right"
+                    android:contentDescription="@string/game_board_square" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/row_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:id="@+id/square_3"
+                    style="@style/board_square"
+                    android:background="@drawable/sq_left_center"
+                    android:contentDescription="@string/game_board_square" />
+
+                <ImageView
+                    android:id="@+id/square_4"
+                    style="@style/board_square"
+                    android:background="@drawable/sq_center"
+                    android:contentDescription="@string/game_board_square" />
+
+                <ImageView
+                    android:id="@+id/square_5"
+                    style="@style/board_square"
+                    android:background="@drawable/sq_right_center"
+                    android:contentDescription="@string/game_board_square" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/row_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:id="@+id/square_6"
+                    style="@style/board_square"
+                    android:background="@drawable/sq_bottom_left"
+                    android:contentDescription="@string/game_board_square" />
+
+                <ImageView
+                    android:id="@+id/square_7"
+                    style="@style/board_square"
+                    android:background="@drawable/sq_bottom_center"
+                    android:contentDescription="@string/game_board_square" />
+
+                <ImageView
+                    android:id="@+id/square_8"
+                    style="@style/board_square"
+                    android:background="@drawable/sq_bottom_right"
+                    android:contentDescription="@string/game_board_square" />
+            </TableRow>
+        </TableLayout>
     </RelativeLayout>
-
-    <TableLayout
-        android:id="@+id/game_board"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center"
-        android:background="@android:color/transparent"
-        android:paddingTop="40dp" >
-
-        <TableRow
-            android:id="@+id/row_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <ImageView
-                android:id="@+id/square_0"
-                style="@style/board_square"
-                android:background="@drawable/sq_top_left"
-                android:contentDescription="@string/game_board_square" />
-
-            <ImageView
-                android:id="@+id/square_1"
-                style="@style/board_square"
-                android:background="@drawable/sq_top_center"
-                android:contentDescription="@string/game_board_square" />
-
-            <ImageView
-                android:id="@+id/square_2"
-                style="@style/board_square"
-                android:background="@drawable/sq_top_right"
-                android:contentDescription="@string/game_board_square" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/row_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <ImageView
-                android:id="@+id/square_3"
-                style="@style/board_square"
-                android:background="@drawable/sq_left_center"
-                android:contentDescription="@string/game_board_square" />
-
-            <ImageView
-                android:id="@+id/square_4"
-                style="@style/board_square"
-                android:background="@drawable/sq_center"
-                android:contentDescription="@string/game_board_square" />
-
-            <ImageView
-                android:id="@+id/square_5"
-                style="@style/board_square"
-                android:background="@drawable/sq_right_center"
-                android:contentDescription="@string/game_board_square" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/row_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <ImageView
-                android:id="@+id/square_6"
-                style="@style/board_square"
-                android:background="@drawable/sq_bottom_left"
-                android:contentDescription="@string/game_board_square" />
-
-            <ImageView
-                android:id="@+id/square_7"
-                style="@style/board_square"
-                android:background="@drawable/sq_bottom_center"
-                android:contentDescription="@string/game_board_square" />
-
-            <ImageView
-                android:id="@+id/square_8"
-                style="@style/board_square"
-                android:background="@drawable/sq_bottom_right"
-                android:contentDescription="@string/game_board_square" />
-        </TableRow>
-    </TableLayout>
 
 </RelativeLayout>
