@@ -1,4 +1,4 @@
-package com.timashton.tictactoe;
+package com.timashton.tictactoe.dialogs;
 
 
 import android.app.Activity;
@@ -18,7 +18,7 @@ public class ListDialogFragment extends DialogFragment{
 	 * Create a new instance of EndGameDialogFragment, String dialogTitle
 	 * and ing dialogListItems as an argument.
 	 */
-	static ListDialogFragment newInstance(int dialogTitle, int dialogListItems){
+	public static ListDialogFragment newInstance(int dialogTitle, int dialogListItems){
 
 		ListDialogFragment frag = new ListDialogFragment();
 		Bundle args = new Bundle();

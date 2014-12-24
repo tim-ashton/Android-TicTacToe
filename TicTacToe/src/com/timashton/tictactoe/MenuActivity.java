@@ -10,8 +10,11 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+import com.timashton.tictactoe.dialogs.MenuDialogFragment;
 import com.timashton.tictactoe.enums.*;
 
 public class MenuActivity 
@@ -40,7 +43,7 @@ MenuDialogFragment.DifficultyListener{
 
 		//set layout to main menu layout after splash screen runs
 		setContentView(R.layout.menu_activity);
-
+		
 		//Set up playerSelectionButton button
 		playerSelectionButton = new RelativeLayoutButton(this, R.id.player_sel_button);
 		playerSelectionButton.setText(R.id.button_title, "X or O");

@@ -1,4 +1,4 @@
-package com.timashton.tictactoe;
+package com.timashton.tictactoe.dialogs;
 
 
 import android.app.Activity;

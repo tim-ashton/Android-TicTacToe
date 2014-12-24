@@ -37,12 +37,6 @@ public class AIPlayer
 	int[] move(Game gb) 
 	{
 		thisGame = gb;
-
-		//just randomize the computer turn
-		if(depth == Difficulty.EASY.getValue()){
-
-		}
-
 		int[] result = alphaBeta(Constants.SEARCH_DEPTH, AIPlayer, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
 		// depth, max-turn, alpha, beta

@@ -1,4 +1,4 @@
-package com.timashton.tictactoe;
+package com.timashton.tictactoe.dialogs;
 
 
 import android.app.Activity;
@@ -8,6 +8,8 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import com.timashton.tictactoe.R;
+import com.timashton.tictactoe.R.string;
 import com.timashton.tictactoe.enums.ListenerTypes;
 
 public class MenuDialogFragment extends DialogFragment{
@@ -30,7 +32,7 @@ public class MenuDialogFragment extends DialogFragment{
 	 * int requestedListener as an argument in the bundle
 	 * for extraction onCreate.
 	 */
-	static MenuDialogFragment newInstance(int dialogTitle, int dialogListItems, ListenerTypes listener){
+	public static MenuDialogFragment newInstance(int dialogTitle, int dialogListItems, ListenerTypes listener){
 
 		MenuDialogFragment frag = new MenuDialogFragment();
 		Bundle args = new Bundle();
