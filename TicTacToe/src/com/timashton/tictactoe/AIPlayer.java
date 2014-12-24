@@ -28,13 +28,23 @@ public class AIPlayer
 		thisGame = null;
 	}
 
-	int[] move(Game gb) 
-	{
+	int[] move(Game gb){
 		thisGame = gb;
-		int[] result = alphaBeta(searchDepth, AIPlayer, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		int[] result;
+		
+		//TODO - tidy up
+		result = canWin();
+		
+		if(result == null){	
+			result = alphaBeta(searchDepth, AIPlayer, Integer.MIN_VALUE, Integer.MAX_VALUE);
+			// depth, max-turn, alpha, beta
+			return new int[] {result[1], result[2]};   // row, col
+		}
+		else{
+			return new int[] {result[0], result[1]};
+		}
 
-		// depth, max-turn, alpha, beta
-		return new int[] {result[1], result[2]};   // row, col
+		
 	}
 
 
@@ -48,17 +58,15 @@ public class AIPlayer
 		int score = 0;
 		int bestRow = -1;
 		int bestCol = -1;
+		
+		if (nextMoves.isEmpty()){
+			Log.e(this.getClass().getName(), "Nextmoves is empty!!");
+		}
 
 		if (nextMoves.isEmpty() || depth == 0){  // Gameover or depth reached, evaluate score
-//			if(difficulty == Difficulty.EASY){
-//				score = evaluateEasy();
-//			}
-//			else{
-//				score = evaluate();
-//			}
 
 			score = evaluate();
-			
+
 			//Log.e(this.getClass().getName(), "Returning- Score: "+score);
 			return new int[] {score, bestRow, bestCol};
 		} 
@@ -93,15 +101,6 @@ public class AIPlayer
 		}
 	}
 
-	/*  
-	 * Simply do random score for the possible moves
-	 * for the easy case.
-	 */
-	private int evaluateEasy(){
-		Random rand = new Random();
-		return rand.nextInt(100) + 1;
-	}
-
 	/* 
 	 * The heuristic evaluation function for the current board
 	 * Return +100, +10, +1 for EACH 3-, 2-, 1-in-a-line for computer.
@@ -121,7 +120,7 @@ public class AIPlayer
 		score += evaluateLine(0, 2, 1, 1, 2, 0);  // alternate diagonal
 		return score;  
 	}
-
+	
 	/*
 	 *  The heuristic evaluation function for the given line of 3 cells
 	 *  Return +100, +10, +1 for 3-, 2-, 1-in-a-line for computer.
@@ -132,7 +131,6 @@ public class AIPlayer
 	{
 		int score = 0;
 
-		//board.getStateOfSquare(int i, int j)
 		// First cell
 		if ( thisGame.getStateOfSquare(row1, col1)  == AIPlayer){
 			score = 1;
@@ -192,4 +190,37 @@ public class AIPlayer
 		return score;
 	}
 	
+	
+	/*
+	 * if there is a winning move return that move otherwise return null
+	 */
+	//TODO - rename
+	private int[] canWin(){
+		// Generate possible next moves in a list of int[2] of {row, col}.
+		List<int[]> nextMoves = thisGame.generateMoves();
+		
+		for (int[] element : nextMoves) {
+			int i = element[0];
+			int j = element[1];
+			//if the space is empty, see if computer can win if it goes there
+			if(thisGame.getStateOfSquare(i, j) == BoardSquaresState.EMPTY){
+				
+				//take a dummy turn then check if it wins..
+				thisGame.setStateOfSquare(i, j, AIPlayer);
+				
+				//this move will win, the AI player should take it
+				if(thisGame.getWinner(AIPlayer, i, j) == AIPlayer){
+
+					Log.e(this.getClass().getName(), "Found a winning move at "+i+" ,"+j);
+					thisGame.setStateOfSquare(i, j, BoardSquaresState.EMPTY);
+					return new int[] {i, j};
+				}
+				
+				//undo the dummy move
+				thisGame.setStateOfSquare(i, j, BoardSquaresState.EMPTY);
+			}
+		}
+		return null;
+	}
+
 }

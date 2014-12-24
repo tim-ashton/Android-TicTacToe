@@ -3,7 +3,7 @@ package com.timashton.tictactoe.enums;
 public enum Difficulty {
 	EASY(1),
 	MEDIUM(2),
-	HARD(3);
+	HARD(9);
 
 	Difficulty(int value){this.value = value;}
 
