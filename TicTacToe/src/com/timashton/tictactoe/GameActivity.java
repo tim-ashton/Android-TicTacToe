@@ -73,7 +73,7 @@ implements ListDialogFragment.listDialogListener{
 		super.onStart();
 		Log.i(this.getClass().getName(), "onStart called - Reading game data from file");
 		loadGame();
-		Log.e(this.getClass().getName(), "onStart exiting - game data retrieved from file");
+		Log.i(this.getClass().getName(), "onStart exiting - game data retrieved from file");
 	}
 
 
@@ -116,9 +116,9 @@ implements ListDialogFragment.listDialogListener{
 	@Override
 	public void onStop(){
 		super.onStop();
-		Log.e(this.getClass().getName(), "onStop called - writing game data to file");
+		Log.i(this.getClass().getName(), "onStop called - writing game data to file");
 		saveGame();
-		Log.e(this.getClass().getName(), "onStop exiting - game data written to file");
+		Log.i(this.getClass().getName(), "onStop exiting - game data written to file");
 	}
 
 	/*

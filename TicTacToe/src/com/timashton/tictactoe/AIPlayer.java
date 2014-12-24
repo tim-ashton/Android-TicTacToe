@@ -4,6 +4,8 @@ package com.timashton.tictactoe;
 import java.util.List;
 import java.util.Random;
 
+import android.util.Log;
+
 import com.timashton.tictactoe.enums.BoardSquaresState;
 import com.timashton.tictactoe.enums.Difficulty;
 
@@ -13,22 +15,14 @@ public class AIPlayer
 {
 	private BoardSquaresState AIPlayer, opponent;
 	private Game thisGame;
-	private int depth;
+	private int searchDepth;
 	private Difficulty difficulty;
 
 
 
 	public AIPlayer(BoardSquaresState AIPlayer, BoardSquaresState Opponent, Difficulty diff){
 		difficulty = diff;
-
-		// Do depth of 1 for both easy and medium but call different score
-		// evaluation for easy.
-		if(diff == Difficulty.EASY || diff == Difficulty.MEDIUM){
-			depth = Difficulty.MEDIUM.getValue();
-		}	
-		else{
-			depth = Difficulty.HARD.getValue();
-		}
+		searchDepth = diff.getValue();
 		this.AIPlayer = AIPlayer;
 		this.opponent = Opponent;
 		thisGame = null;
@@ -37,7 +31,7 @@ public class AIPlayer
 	int[] move(Game gb) 
 	{
 		thisGame = gb;
-		int[] result = alphaBeta(Constants.SEARCH_DEPTH, AIPlayer, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		int[] result = alphaBeta(searchDepth, AIPlayer, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
 		// depth, max-turn, alpha, beta
 		return new int[] {result[1], result[2]};   // row, col
@@ -56,13 +50,16 @@ public class AIPlayer
 		int bestCol = -1;
 
 		if (nextMoves.isEmpty() || depth == 0){  // Gameover or depth reached, evaluate score
-			if(difficulty == Difficulty.EASY){
-				score = evaluateEasy();
-			}
-			else{
-				score = evaluate();
-			}
+//			if(difficulty == Difficulty.EASY){
+//				score = evaluateEasy();
+//			}
+//			else{
+//				score = evaluate();
+//			}
 
+			score = evaluate();
+			
+			//Log.e(this.getClass().getName(), "Returning- Score: "+score);
 			return new int[] {score, bestRow, bestCol};
 		} 
 		else{
@@ -194,4 +191,5 @@ public class AIPlayer
 		}
 		return score;
 	}
+	
 }
