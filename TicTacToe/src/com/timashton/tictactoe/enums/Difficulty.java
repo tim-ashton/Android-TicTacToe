@@ -1,9 +1,9 @@
 package com.timashton.tictactoe.enums;
 
 public enum Difficulty {
-	EASY(1),
-	MEDIUM(2),
-	HARD(9);
+	EASY(0),
+	MEDIUM(1),
+	HARD(2);
 
 	Difficulty(int value){this.value = value;}
 
