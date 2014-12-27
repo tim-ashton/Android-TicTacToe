@@ -50,6 +50,7 @@ implements ListDialogFragment.listDialogListener{
 	private boolean isGameOver;
 
 	private ImageView playerImage;
+	private TextView gameDifficulty;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -58,7 +59,8 @@ implements ListDialogFragment.listDialogListener{
 		Log.i(this.getClass().getName(), "+++ ON CREATE GAME +++");
 
 		playerImage = (ImageView)findViewById(R.id.game_title_player_icon);
-
+		gameDifficulty = (TextView)findViewById(R.id.game_title_difficulty);
+		
 		if(savedInstanceState == null)
 			deviceturned = false;
 		else
@@ -140,6 +142,17 @@ implements ListDialogFragment.listDialogListener{
 	 */
 	private void init(){
 		Log.i(this.getClass().getName(), "Enter: init()");
+		
+		if(game.getDifficulty() == Difficulty.EASY){
+			gameDifficulty.setText(R.string.game_difficulty_easy);
+		}
+		else if(game.getDifficulty() == Difficulty.MEDIUM){
+			gameDifficulty.setText(R.string.game_difficulty_medium);
+		}
+		else{
+			gameDifficulty.setText(R.string.game_difficulty_hard);
+		}
+		
 
 		if(game.getHumanPlayer() == BoardSquaresState.CROSS){
 			playerImage.setImageResource(R.drawable.cross_2);

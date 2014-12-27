@@ -29,11 +29,11 @@
             android:id="@+id/game_title_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/game_title_image"
+            android:layout_alignRight="@+id/game_title_image"
             android:layout_below="@+id/game_title_image"
             android:contentDescription="@string/game_title_player"
             android:paddingTop="40dp"
-            android:layout_alignEnd="@+id/game_title_image"
-            android:layout_alignRight="@+id/game_title_image"
             android:text="@string/game_player_description"
             android:textColor="@color/ivory"
             android:textSize="25sp" />
@@ -129,5 +129,15 @@
             </TableRow>
         </TableLayout>
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/game_title_difficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/game_landscape_outer"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/game_title_difficulty"
+        android:textColor="@color/ivory"
+        android:textSize="25sp" />
 
 </RelativeLayout>

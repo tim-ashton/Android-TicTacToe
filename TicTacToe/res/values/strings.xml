@@ -45,10 +45,6 @@
     <string name="player_alert">Select O or X</string>
     <string name="difficulty_alert">Select a Difficulty</string>
 
-    <!-- old stuff -->
-    <string name="continue_game_button">Continue Game</string>
-    <string name="new_game_button_X">Start Game</string>
-
     <!-- Game Activity items -->
     <string name="game_board_square">Game Board Square</string>
     <string name="you_win">You Win!</string>
@@ -64,6 +60,11 @@
     <string name="game_title_player">Display the current players turn</string>
     <string name="game_player_image">Image of nought or cross representing current player</string>
     <string name="game_player_description">Player</string>
+    <string name="game_title_difficulty">Difficulty indicator - in game</string>
+    
+    <string name="game_difficulty_easy">Easy Difficulty</string>
+    <string name="game_difficulty_medium">Medium Difficulty</string>
+    <string name="game_difficulty_hard">Impossible Difficulty</string>
 
 
 </resources>

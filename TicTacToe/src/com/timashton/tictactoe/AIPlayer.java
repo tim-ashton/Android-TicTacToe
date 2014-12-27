@@ -18,8 +18,6 @@ public class AIPlayer{
 	private Difficulty difficulty;
 	int turnCount;
 
-
-
 	public AIPlayer(BoardSquaresState AIPlayer, BoardSquaresState Opponent, Difficulty diff){
 		Log.i(this.getClass().getName(), "Initializing AI Player");
 		difficulty = diff;
@@ -32,7 +30,7 @@ public class AIPlayer{
 		Log.i(this.getClass().getName(), "Enter: move()");
 		thisGame = gb;
 		int[] result;
-		
+
 		// Use minimax if not easy
 		if(difficulty != Difficulty.EASY){
 			searchDepth = difficulty.getValue();
@@ -43,7 +41,6 @@ public class AIPlayer{
 			else{
 				return new int[] {result[0], result[1]};
 			}
-			
 		}
 		else{
 			//make a random move for easy
@@ -197,6 +194,8 @@ public class AIPlayer{
 	 * that move otherwise return null.
 	 */
 	private int[] getMoveIfCanWin(){
+		Log.i(this.getClass().getName(), "Enter: getMoveIfCanWin()");
+
 		// Generate possible next moves in a list of int[2] of {row, col}.
 		List<int[]> nextMoves = thisGame.generateMoves();
 
@@ -212,8 +211,7 @@ public class AIPlayer{
 				//this move will win, the AI player should take it
 				if(thisGame.getWinner(AIPlayer, i, j) == AIPlayer){
 
-					Log.e(this.getClass().getName(), "Found a winning move at "+i+" ,"+j);
-					thisGame.setStateOfSquare(i, j, BoardSquaresState.EMPTY);
+					thisGame.setStateOfSquare(i, j, BoardSquaresState.EMPTY); //undo the dummy move
 					return new int[] {i, j};
 				}
 
