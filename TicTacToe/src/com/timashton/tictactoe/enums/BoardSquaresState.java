@@ -1,7 +1,6 @@
 package com.timashton.tictactoe.enums;
 
-public enum BoardSquaresState 
-{
+public enum BoardSquaresState{
 	EMPTY,
 	CROSS,
 	NOUGHT

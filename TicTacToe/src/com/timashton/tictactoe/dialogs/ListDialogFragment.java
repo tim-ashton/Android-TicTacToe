@@ -19,13 +19,11 @@ public class ListDialogFragment extends DialogFragment{
 	 * and ing dialogListItems as an argument.
 	 */
 	public static ListDialogFragment newInstance(int dialogTitle, int dialogListItems){
-
 		ListDialogFragment frag = new ListDialogFragment();
 		Bundle args = new Bundle();
 		args.putInt("title", dialogTitle);
 		args.putInt("items", dialogListItems);
 		frag.setArguments(args);
-
 		return frag;
 	}
 
@@ -41,7 +39,6 @@ public class ListDialogFragment extends DialogFragment{
 	// Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
 	@Override
 	public void onAttach(Activity activity){
-
 		super.onAttach(activity);
 
 		// Verify that the host activity implements the callback interface

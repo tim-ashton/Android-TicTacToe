@@ -9,11 +9,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.timashton.tictactoe.R;
-import com.timashton.tictactoe.R.string;
 import com.timashton.tictactoe.enums.ListenerTypes;
 
 public class MenuDialogFragment extends DialogFragment{
-
 	private static final String TITLE = "title";
 	private static final String ITEMS = "items";
 	private static final String LISTENER = "listener";
@@ -21,7 +19,6 @@ public class MenuDialogFragment extends DialogFragment{
 	// Use these instance of the interface to deliver action events
 	private PlayerTypeListener playerTypeListener;
 	private DifficultyListener difficultyListener;
-
 
 	private int  mTitle;
 	private int mItems;
@@ -33,14 +30,12 @@ public class MenuDialogFragment extends DialogFragment{
 	 * for extraction onCreate.
 	 */
 	public static MenuDialogFragment newInstance(int dialogTitle, int dialogListItems, ListenerTypes listener){
-
 		MenuDialogFragment frag = new MenuDialogFragment();
 		Bundle args = new Bundle();
 		args.putInt(TITLE, dialogTitle);
 		args.putInt(ITEMS, dialogListItems);
 		args.putSerializable(LISTENER, listener);
 		frag.setArguments(args);
-
 		return frag;
 	}
 
@@ -51,15 +46,12 @@ public class MenuDialogFragment extends DialogFragment{
 	 * */
 	//for choosing nought or cross
 	public interface PlayerTypeListener{
-
 		public void onPlayerDialogClick(DialogFragment dialog, int which);
 	}
 	//for choosing the difficulty
 	public interface DifficultyListener{
-
 		public void onDifficultyDialogClick(DialogFragment dialog, int which);
 	}
-
 
 	/*
 	 * Override the Fragment.onAttach() method to instantiate listeners
@@ -67,7 +59,6 @@ public class MenuDialogFragment extends DialogFragment{
 	 */
 	@Override
 	public void onAttach(Activity activity){
-
 		super.onAttach(activity);
 
 		// Verify that the MainMenu activity implements the callback interface
@@ -86,7 +77,6 @@ public class MenuDialogFragment extends DialogFragment{
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState){
-
 		//retrieve the arguments from the bundle
 		mTitle = getArguments().getInt(TITLE);
 		mItems = getArguments().getInt(ITEMS);
@@ -114,8 +104,7 @@ public class MenuDialogFragment extends DialogFragment{
 	private DialogInterface.OnClickListener getRequestedListener(ListenerTypes requestedListener){
 
 		DialogInterface.OnClickListener listener = null;
-		switch(requestedListener)
-		{
+		switch(requestedListener){
 		case PLAYER_TYPE_LISTENER:
 			listener = createPlayerTypeListener();
 			break;
@@ -130,7 +119,6 @@ public class MenuDialogFragment extends DialogFragment{
 	 * Create a listener for selecting the player type
 	 */
 	private DialogInterface.OnClickListener createPlayerTypeListener(){
-
 		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener(){
 
 			@Override
@@ -159,7 +147,6 @@ public class MenuDialogFragment extends DialogFragment{
 	 * Create a listener for selecting the difficulty
 	 */
 	private DialogInterface.OnClickListener createDifficultyListener(){
-
 		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener(){
 
 			@Override

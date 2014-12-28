@@ -9,41 +9,31 @@
     <string name="desc_splash_nought_1">Splash Screen Nought1</string>
     <string name="desc_splash_cross_3">Splash Screen Cross3</string>
 
+    
+    
     <!-- Main menu -->
     <string name="desc_menu_title">Menu Title</string>
     <string name="menu_title_string">Game Menu</string>
     <string name="desc_menu_subtitle">Menu Subtitle</string>
-    <string name="menu_subtitle_string">New Game Setup</string>
-    <string name="desc_playing_as">Playing As</string>
+    <string name="menu_subtitle_string">Play as X or 0 
+        in an Easy, Medium or Impossible game.</string>
+   
+   <!-- for the menu dialog fragment -->
     <string name="null_dialog_title">null</string>
-
-    <!-- items for the select play as menu -->
-    <string name="play_as_button">Select\nO or X</string>
-    <string name="play_as_selected">Player is:</string>
     <string name="select_player_dialog_title">Select X or O</string>
-
     <string-array name="play_as">
         <item>Play as Cross</item>
         <item>Play as Nought</item>
         <item>Random Select</item>
     </string-array>
 
-    <!-- Items in the Select Difficulty Menu -->
-    <string name="difficulty_button">Select Difficulty</string>
-    <string name="difficulty_selected">Difficulty:</string>
+    <!-- for the Select Difficulty Dialog  -->
     <string name="select_difficulty_dialog_title">Select Difficulty</string>
-
     <string-array name="difficulties">
         <item>Easy</item>
         <item>Medium</item>
         <item>Impossible</item>
     </string-array>
-
-    <string name="desc_difficulty_selected">TODO</string>
-
-    <!-- Alert strings -->
-    <string name="player_alert">Select O or X</string>
-    <string name="difficulty_alert">Select a Difficulty</string>
 
     <!-- Game Activity items -->
     <string name="game_board_square">Game Board Square</string>

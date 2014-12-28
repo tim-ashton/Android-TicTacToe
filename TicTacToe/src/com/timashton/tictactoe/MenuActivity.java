@@ -10,8 +10,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
 import com.timashton.tictactoe.dialogs.MenuDialogFragment;
@@ -32,7 +30,6 @@ MenuDialogFragment.DifficultyListener{
 	private Button resetButton;
 	private Button playButton;
 
-
 	private Difficulty difficulty;
 	private BoardSquaresState selectedPlayer;
 
@@ -43,11 +40,11 @@ MenuDialogFragment.DifficultyListener{
 
 		//set layout to main menu layout after splash screen runs
 		setContentView(R.layout.menu_activity);
-		
+
 		//Set up playerSelectionButton button
 		playerSelectionButton = new RelativeLayoutButton(this, R.id.player_sel_button);
 		playerSelectionButton.setText(R.id.button_title, "X or O");
-		playerSelectionButton.setText(R.id.button_subtitle, "Play as Nought or Cross");
+		playerSelectionButton.setText(R.id.button_subtitle, "Press for Nought or Cross");
 		playerSelectionButton.setOnClickListener(this);
 
 		//Set up difficultyButton button
@@ -73,6 +70,7 @@ MenuDialogFragment.DifficultyListener{
 		Log.i(this.getClass().getName(), "++ ON resume ++");
 		resetMenu();
 	}
+
 	/*
 	 * public void onDifficultyDialogClick(DialogFragment dialog, int which)
 	 * 
@@ -200,7 +198,6 @@ MenuDialogFragment.DifficultyListener{
 
 					//start the game
 					startActivity(launchIntent);
-
 					break;
 				case R.id.reset_button:
 					Log.i(this.getClass().getName(), "Reset button clicked.");
@@ -237,7 +234,7 @@ MenuDialogFragment.DifficultyListener{
 		// Clean up the menu items first
 		// reset player button
 		playerSelectionButton.setText(R.id.button_title, "X or O");
-		playerSelectionButton.setText(R.id.button_subtitle, "Play as Nought or Cross");
+		playerSelectionButton.setText(R.id.button_subtitle, "Press for Nought or Cross");
 		playerSelectionButton.setImageResource(R.id.item_set_image, R.drawable.btn_check_off_focused_holo_light);
 		playerSelectionButton.setImageResource(R.id.selector_button_image, R.drawable.ic_menu_help_holo_light);
 
@@ -259,7 +256,6 @@ MenuDialogFragment.DifficultyListener{
 	 * Set attributes for player and menu
 	 */
 	private void setPlayer(BoardSquaresState player){
-
 		if(player == BoardSquaresState.CROSS){
 			selectedPlayer = BoardSquaresState.CROSS;
 			playerSelectionButton.setText(R.id.button_title, "Cross");

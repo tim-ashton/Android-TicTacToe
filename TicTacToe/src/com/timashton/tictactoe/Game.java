@@ -27,15 +27,13 @@ public class Game implements Serializable{
 
 		gameBoard = new BoardSquaresState[Constants.BOARD_SIZE][Constants.BOARD_SIZE];
 
-		// Fill each row with 0
-		for (BoardSquaresState[] row: gameBoard)
-			Arrays.fill(row, BoardSquaresState.EMPTY);
+		// Fill each row with BoardSquaresState.EMPTY
+		resetBoard();
 
 		humanPlayer = hPlayer;
 		computerPlayer = cPlayer;
 		this.difficulty = difficulty;
 	}
-
 
 	/*
 	 * Reset every square on the gameBoard back to PlayerType.NO_PLAYER
@@ -44,7 +42,6 @@ public class Game implements Serializable{
 		for (BoardSquaresState[] row: gameBoard)
 			Arrays.fill(row, BoardSquaresState.EMPTY);
 	}
-
 
 	/*
 	 * Generate a list of int[2] which are coordinates of available
@@ -64,118 +61,107 @@ public class Game implements Serializable{
 		return nextMoves;
 	}
 
-
-	/*
-	 * Checks each row, column and diagonal for a winner of this game
+	/* public boolean isWinner(BoardSquaresState player)
+	 * 
+	 * Check possible winning combinations. As soon as a winning
+	 * combination is found return true otherwise return false.
 	 */
-	//TODO - update and improve
-	//TODO - this should be returning true or false
-	//TODO - use getwinner below instead of this
-	public BoardSquaresState getWinner(BoardSquaresState player, int rowNumber, int columnNumber){
+	public boolean isWinner(BoardSquaresState player){
 
-		BoardSquaresState[] results = new BoardSquaresState[4];
-		results[0] = checkRow(player, rowNumber, columnNumber);
-		results[1] = checkColumn(player, rowNumber, columnNumber);
-
-		//just check diagonals every time
-		results[2] = checkDiagR(player);
-		results[3] = checkDiagL(player);
-
-		for(int i = 0; i < results.length; i++){
-			if(results[i] == player){
-				return player;
-			}
+		if(checkRows(player)){
+			return true;
 		}
-		return BoardSquaresState.EMPTY;
+		else if(checkColumns(player)){
+			return true;
+		}
+		else if(checkDiagRtoL(player)){
+			return true;
+		}
+		else if(checkDiagLtoR(player)){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 	/*
-	 * Check each row of a gameBoard to determine if there is a winner
+	 * Check each row of a gameBoard to determine if the current player
+	 * being checked is a winner.
 	 */
-	//TODO - update and improve
-	private BoardSquaresState checkRow(BoardSquaresState player, int rowNumber, int columnNumber){
-
-		for(int i = 0; i < Constants.BOARD_SIZE; i++){
-
-			if(gameBoard[rowNumber][i] != player){
-
-				// if any square is empty return
-				return BoardSquaresState.EMPTY;
+	private boolean checkRows(BoardSquaresState player){
+		for (int row = 0; row < Constants.BOARD_SIZE; row++){
+			int count = 0;
+			for (int col = 0; col < Constants.BOARD_SIZE; col++){
+				if(gameBoard[row][col] == player){
+					count++; // if any square is something else this player hasnt won that line
+				}
+				if(count == Constants.BOARD_SIZE){
+					return true;
+				}
 			}
 		}
-		//if we make it out of the loop player is the winner
-		return player;
+		return false;
 	}
 
 	/*
-	 * Checks each column of a gameBoard to check for a winner
+	 * Check each column of a gameBoard to determine if the current player
+	 * being checked is a winner.
 	 */
-	//TODO - update and improve
-	private BoardSquaresState checkColumn(BoardSquaresState player, int rowNumber, int columnNumber){
+	private boolean checkColumns(BoardSquaresState player){
 
-		for(int i = 0; i < Constants.BOARD_SIZE; i++){
+		for (int col = 0; col < Constants.BOARD_SIZE; col++){
+			int count = 0;
+			for (int row = 0; row < Constants.BOARD_SIZE; row++){
+				if(gameBoard[row][col] == player){
 
-			if(gameBoard[i][columnNumber] != player){
-
-				// if any square is empty return
-				return BoardSquaresState.EMPTY;
+					count++; // if any square is something else this player hasnt won that line
+				}
+				if(count == Constants.BOARD_SIZE){
+					return true;
+				}
 			}
 		}
-		//if we make it out of the loop player is the winner
-		return player;
+		return false;
 	}
 
 	/*
-	 * Checks the diagonals (left to right) of gameBoard to check if the player passed is a winner 
+	 * Checks the diagonals (left to right) of gameBoard to check if the player is a winner 
 	 */
-	private BoardSquaresState checkDiagR(BoardSquaresState player){
-
+	private boolean checkDiagRtoL(BoardSquaresState player){
 		for(int i = 0; i < Constants.BOARD_SIZE; i++){
-
 			if(gameBoard[i][i] != player){
-
-				// if any square is empty return
-				return BoardSquaresState.EMPTY;
+				return false; // if any square is not this player the player has not won.
 			}
 		}
-		//if we make it out of the loop player is the winner
-		return player;
+		return true; //if make it out of the loop player is the winner.
 	}
 
 	/*
-	 * Checks diagonal from right to left to check if the player passed is a winner
+	 * Checks diagonal from right to left to check if the player is a winner
 	 */
-	private BoardSquaresState checkDiagL(BoardSquaresState player){
-
+	private boolean checkDiagLtoR(BoardSquaresState player){
 		for(int i = 0; i < Constants.BOARD_SIZE; i++){
-
 			if(gameBoard[i][(Constants.BOARD_SIZE -1) - i] != player){
-
-				// if any square is empty return
-				return BoardSquaresState.EMPTY;
+				return false; // if any square is not this player the player has not won
 			}
 		}
-		//if we make it out of the loop then the player won
-		return player;
+		return true;  //if make it out of the loop player is the winner.
 	}
 
 	/*public boolean boardEmpty()
 	 * 
 	 * Returns true if the game board is empty
 	 */
-	public boolean boardEmpty()
-	{
-		for(int i = 0; i < Constants.BOARD_SIZE; i++)
-		{
-			for(int j = 0; j < Constants.BOARD_SIZE; j++)
-			{
-				if (gameBoard[i][j] != BoardSquaresState.EMPTY)
+	public boolean boardEmpty(){
+		for(int i = 0; i < Constants.BOARD_SIZE; i++){
+			for(int j = 0; j < Constants.BOARD_SIZE; j++){
+				if (gameBoard[i][j] != BoardSquaresState.EMPTY){
 					return false;
+				}	
 			}
 		}
-
-		//if we make it out of the loop then the board must be empty
-		return true;
+		return true; //if get out of the loop then the board must be empty
 	}
 
 	/*
@@ -205,8 +191,6 @@ public class Game implements Serializable{
 	public BoardSquaresState getStateOfSquare(int i, int j){
 		return gameBoard[i][j];
 	}
-
-
 
 	/*
 	 * Sets the state of a square with coordinates i,j

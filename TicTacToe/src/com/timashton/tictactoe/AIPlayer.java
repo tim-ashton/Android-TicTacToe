@@ -8,8 +8,6 @@ import android.util.Log;
 import com.timashton.tictactoe.enums.BoardSquaresState;
 import com.timashton.tictactoe.enums.Difficulty;
 
-
-
 public class AIPlayer{
 
 	private BoardSquaresState AIPlayer, opponent;
@@ -31,22 +29,20 @@ public class AIPlayer{
 		thisGame = gb;
 		int[] result;
 
-		// Use minimax if not easy
-		if(difficulty != Difficulty.EASY){
-			searchDepth = difficulty.getValue();
-			if((result = getMoveIfCanWin()) == null){
+		if((result = getMoveIfCanWin()) != null){ //take the winning move if it is there
+			return new int[] {result[0], result[1]};
+		}
+		else{ // Use minimax if not easy
+			if(difficulty != Difficulty.EASY){
+				searchDepth = difficulty.getValue();
 				result = alphaBeta(searchDepth, AIPlayer, Integer.MIN_VALUE, Integer.MAX_VALUE);
 				return new int[] {result[1], result[2]};   // row, col
 			}
-			else{
-				return new int[] {result[0], result[1]};
+			else{ //make a random move for easy
+				List<int[]> nextMoves = thisGame.generateMoves();
+				int move = (int)(Math.random() * nextMoves.size());
+				return nextMoves.get(move);
 			}
-		}
-		else{
-			//make a random move for easy
-			List<int[]> nextMoves = thisGame.generateMoves();
-			int move = (int)(Math.random() * nextMoves.size());
-			return nextMoves.get(move);
 		}
 	}
 
@@ -194,7 +190,7 @@ public class AIPlayer{
 	 * that move otherwise return null.
 	 */
 	private int[] getMoveIfCanWin(){
-		Log.i(this.getClass().getName(), "Enter: getMoveIfCanWin()");
+		Log.e(this.getClass().getName(), "Enter: getMoveIfCanWin()");
 
 		// Generate possible next moves in a list of int[2] of {row, col}.
 		List<int[]> nextMoves = thisGame.generateMoves();
@@ -204,22 +200,18 @@ public class AIPlayer{
 			int j = element[1];
 			//if the space is empty, see if computer can win if it goes there
 			if(thisGame.getStateOfSquare(i, j) == BoardSquaresState.EMPTY){
-
 				//take a dummy turn then check if it wins..
 				thisGame.setStateOfSquare(i, j, AIPlayer);
 
 				//this move will win, the AI player should take it
-				if(thisGame.getWinner(AIPlayer, i, j) == AIPlayer){
-
+				if(thisGame.isWinner(AIPlayer)){
 					thisGame.setStateOfSquare(i, j, BoardSquaresState.EMPTY); //undo the dummy move
 					return new int[] {i, j};
 				}
-
 				//undo the dummy move
 				thisGame.setStateOfSquare(i, j, BoardSquaresState.EMPTY);
 			}
 		}
 		return null;
 	}
-
 }

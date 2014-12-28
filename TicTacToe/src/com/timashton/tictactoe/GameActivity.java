@@ -15,7 +15,6 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -38,7 +37,7 @@ implements ListDialogFragment.listDialogListener{
 	//everything we need to know about the game
 	private Game game;
 
-	//store all the imageViews
+	//store imageViews of the game board
 	private ImageView[][] gameSquares;
 
 	// check if device was turned for re-creating activity
@@ -46,8 +45,6 @@ implements ListDialogFragment.listDialogListener{
 
 	//the computer player
 	private AIPlayer ai;
-
-	private boolean isGameOver;
 
 	private ImageView playerImage;
 	private TextView gameDifficulty;
@@ -60,7 +57,7 @@ implements ListDialogFragment.listDialogListener{
 
 		playerImage = (ImageView)findViewById(R.id.game_title_player_icon);
 		gameDifficulty = (TextView)findViewById(R.id.game_title_difficulty);
-		
+
 		if(savedInstanceState == null)
 			deviceturned = false;
 		else
@@ -78,14 +75,12 @@ implements ListDialogFragment.listDialogListener{
 		Log.i(this.getClass().getName(), "onStart exiting - game data retrieved from file");
 	}
 
-
 	@Override
 	protected void onResume(){
-		super.onResume();  // Always call the superclass method first
+		super.onResume();
 		Log.i(this.getClass().getName(), "++ ON resume game ++");
 
-		if(deviceturned == false)
-		{
+		if(deviceturned == false){
 			//create a new intent to put the one that started this activity
 			Intent intent = getIntent();
 
@@ -135,14 +130,13 @@ implements ListDialogFragment.listDialogListener{
 		return super.onKeyDown(keyCode, event);
 	}
 
-
 	/* private void init()
 	 * 
 	 * Initializes a new game.
 	 */
 	private void init(){
 		Log.i(this.getClass().getName(), "Enter: init()");
-		
+
 		if(game.getDifficulty() == Difficulty.EASY){
 			gameDifficulty.setText(R.string.game_difficulty_easy);
 		}
@@ -152,7 +146,6 @@ implements ListDialogFragment.listDialogListener{
 		else{
 			gameDifficulty.setText(R.string.game_difficulty_hard);
 		}
-		
 
 		if(game.getHumanPlayer() == BoardSquaresState.CROSS){
 			playerImage.setImageResource(R.drawable.cross_2);
@@ -161,7 +154,6 @@ implements ListDialogFragment.listDialogListener{
 			playerImage.setImageResource(R.drawable.nought_2);
 		}
 
-		isGameOver = false;
 		ai = new AIPlayer(game.getComputerPlayer(), game.getHumanPlayer(), game.getDifficulty());
 		setUpGameBoard();
 
@@ -179,11 +171,9 @@ implements ListDialogFragment.listDialogListener{
 	 */
 	private void fireComputerTurn()	{
 		Log.i(this.getClass().getName(), "Enter: fireComputerTurn()");
-
 		final int[] bestMove = ai.move(game);
 
-
-		//set the state of the gameboard to the computer player's type
+		// Assign the computer move
 		game.setStateOfSquare(bestMove[0], bestMove[1], game.getComputerPlayer());
 
 		//assign the image to the game board depending on computer Playertype
@@ -194,52 +184,31 @@ implements ListDialogFragment.listDialogListener{
 			gameSquares[bestMove[0]][bestMove[1]].setImageResource(R.drawable.nought_1);
 		}
 
-		//check if the computer player has won the game with this move
-		checkForEndGame(game.getComputerPlayer(), bestMove[0], bestMove[1]);
+		if(game.isWinner(game.getComputerPlayer())){
+			handleEndGame(game.getComputerPlayer());
+		}
+		else if(game.generateMoves().isEmpty()){ //this game is a draw
+			handleEndGame(BoardSquaresState.EMPTY);
+		}
 	}
 
-	// return true if the game is finished
-	private boolean checkForEndGame(BoardSquaresState currentPlayer, int rowNumber, int columnNumber){
-		Log.i(this.getClass().getName(), "Enter: checkForEndGame()");
+	/* handleEndGame(BoardSquaresState winner)
+	 * 
+	 * handle displaying dialogs for the end of game
+	 * 
+	 */
+	public void handleEndGame(BoardSquaresState winner){
 		int endGameDialogTitle = 0;
-		BoardSquaresState winner = BoardSquaresState.EMPTY;
-		BoardSquaresState result = game.getWinner(currentPlayer, rowNumber, columnNumber);
-
-		//TODO ... fix this mess below
-
-		//first set the winner if there is one..
-		if(result == BoardSquaresState.CROSS)
-		{
-			winner = BoardSquaresState.CROSS;
-		}
-		else if(result == BoardSquaresState.NOUGHT)
-		{
-			winner = BoardSquaresState.NOUGHT;
-		}
-
-
-		if(winner == game.getHumanPlayer())
-		{
+		if(winner == game.getHumanPlayer()){
 			endGameDialogTitle = R.string.you_win;
-			isGameOver = true;
 		}
-		else if(winner == game.getComputerPlayer())
-		{
+		else if(winner == game.getComputerPlayer()){
 			endGameDialogTitle = R.string.you_lose;
-			isGameOver = true;
 		}
-		else if(game.generateMoves().isEmpty())
-		{
+		else if(winner == BoardSquaresState.EMPTY){
 			endGameDialogTitle = R.string.game_drawn;
-			isGameOver = true;
 		}
-
-		if(isGameOver == true)
-		{
-			showEndGameDialog(endGameDialogTitle);
-		}
-
-		return isGameOver;
+		showEndGameDialog(endGameDialogTitle);
 	}
 
 	/* private void setUpGameBoard()
@@ -280,25 +249,25 @@ implements ListDialogFragment.listDialogListener{
 		}
 	}
 
-	/*
+
+	/* addOnClickListenerToSquare(final int i, final int j)
+	 * 
 	 * Add a Listener to the coordinate defined by i,j
-	 * Listener provides the main interaction with the game play
+	 * Listener provides the user interaction with the game play.
 	 */
 	private void addOnClickListenerToSquare(final int i, final int j){
 		gameSquares[i][j].setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-
 				if(game.getStateOfSquare(i, j) == BoardSquaresState.EMPTY){
 					//set the state of the game board to the player
-					//at the position x,y
+					//at the position i,j
 					game.setStateOfSquare(i, j, game.getHumanPlayer());
 
 					// set the image on the game board to the current
 					// human player's player type
 					if(game.getHumanPlayer() == BoardSquaresState.CROSS){
 						gameSquares[i][j].setImageResource(R.drawable.cross_1);
-
 					}
 					else{
 						gameSquares[i][j].setImageResource(R.drawable.nought_1);
@@ -306,18 +275,25 @@ implements ListDialogFragment.listDialogListener{
 
 					// Check if the player won and return if it is the 
 					// case we do not want to continue as the game is over
-					if(checkForEndGame(game.getHumanPlayer(), i, j) == true){
+					if(game.isWinner(game.getHumanPlayer())){
+						handleEndGame(game.getHumanPlayer());
 						return;
 					}
-
-					// fire a computer turn after the player has gone
-					fireComputerTurn();
+					else if(game.generateMoves().isEmpty()){ //this game is a draw
+						handleEndGame(BoardSquaresState.EMPTY);
+					}
+					else{
+						// fire a computer turn after the player has gone
+						fireComputerTurn();
+					}
 				}
 			}	
 		});
 	}
 
-	/*
+
+	/* resetGame()
+	 * 
 	 * Reset the game back to the original state at the start
 	 * - restart the same game if selected in the dialog
 	 */
@@ -326,12 +302,12 @@ implements ListDialogFragment.listDialogListener{
 		for(int i = 0; i < Constants.BOARD_SIZE; i++){
 			for(int j = 0; j < Constants.BOARD_SIZE; j++){
 				gameSquares[i][j].setImageResource(0);
-				//gameSquares[i][j].setBackgroundResource(0);
 			}
 		}
 		game.resetBoard();
 		init();
 	}
+
 
 	@Override
 	public void onDialogClick(DialogFragment dialog, int which){
@@ -347,10 +323,16 @@ implements ListDialogFragment.listDialogListener{
 		}
 	}
 
+	/* showEndGameDialog(int dialogTitle)
+	 * 
+	 * Show the dialog at the end of each game.
+	 */
+
 	private void showEndGameDialog(int dialogTitle) {
 
 		int itemsList = R.array.end_game_options;
-		// DialogFragment.show() will take care of adding the fragment
+
+		// DialogFragment.show() takes care of adding the fragment
 		// in a transaction.  We also want to remove any currently showing
 		// dialog, so make our own transaction and take care of that here.
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -368,29 +350,37 @@ implements ListDialogFragment.listDialogListener{
 
 
 	/*
-	 * private void makeFirstAIMove() used to make 
-	 * the first move in the game if the computer is
+	 * private void makeFirstAIMove() 
+	 * Make the first move in the game if the computer is
 	 * cross.
 	 */
 	private void makeFirstAIMove(){
-		Random rand = new Random();
-		int i = rand.nextInt(Constants.BOARD_SIZE);
-		int j = rand.nextInt(Constants.BOARD_SIZE);
-		gameSquares[i][j].setImageResource(R.drawable.cross_1);
-		game.setStateOfSquare(i, j, BoardSquaresState.CROSS);
+		if(game.getDifficulty() != Difficulty.HARD){
+			Random rand = new Random();
+			int i = rand.nextInt(Constants.BOARD_SIZE);
+			int j = rand.nextInt(Constants.BOARD_SIZE);
+			gameSquares[i][j].setImageResource(R.drawable.cross_1);
+			game.setStateOfSquare(i, j, BoardSquaresState.CROSS);
+		}
+		else{
+			//take the middle if hard [1][1]
+			gameSquares[1][1].setImageResource(R.drawable.cross_1);
+			game.setStateOfSquare(1, 1, BoardSquaresState.CROSS);
+		}
 	}
 
 
-	/*
+	/* saveGame()
 	 * Writes the game object out to file
 	 * 
 	 * There was a continue game option in the original prototype.
-	 * It was removed as unnecessary.
+	 * It was removed as unnecessary feature. Continuing to use
+	 * this implementation.
 	 * 
 	 * This is now only used when the device is turned.
-	 * 
 	 */
 	private void saveGame()	{
+		Log.i(this.getClass().getName(), "Entry: saveGame()");
 		try {
 			FileOutputStream fos = openFileOutput(Constants.GAMEBOARD_SAVE_DATA, Context.MODE_PRIVATE);
 			try {
@@ -399,41 +389,37 @@ implements ListDialogFragment.listDialogListener{
 				oos.close();
 			} 
 			catch (IOException e){
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(this.getClass().getName(), e.toString());;
 			}
 		} 
 		catch (FileNotFoundException e){
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(this.getClass().getName(), e.toString());
 		}
 	}
 
-	/*
+
+	/* loadGame()
+	 * 
 	 * Reads the save game from file
 	 */
 	private void loadGame()	{
+		Log.i(this.getClass().getName(), "Enter: loadGame()");
 		try{
 			FileInputStream gameBoardIn = openFileInput(Constants.GAMEBOARD_SAVE_DATA);
 			try	{
 				ObjectInputStream ois = new ObjectInputStream(gameBoardIn);
 				game = (Game)ois.readObject();
 				ois.close();
-				Log.i(this.getClass().getName(), "++ We have read save data from file ++");
-			} 
-			catch (IOException e) 	{
-				Log.e(this.getClass().getName(), "Unable to read from file:");
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 
 			} 
+			catch (IOException e) 	{
+				Log.e(this.getClass().getName(), e.toString());
+			} 
 			catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(this.getClass().getName(), e.toString());
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(this.getClass().getName(), e.toString());
 		}
 	}
 }
