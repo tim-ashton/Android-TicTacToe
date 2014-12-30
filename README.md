@@ -1,15 +1,13 @@
 Android-TicTacToe
 =================
 
-Tic Tac Toe game for Android
+As the name suggests, this is a Tic Tac Toe game for Android. The project was built against Android 4.4.2 SDK and tested (And designed for) my Samsung Galaxy S3. The S3 was running Android 4.3 Jelly Bean. The application interface is only designed for the 4.7 inch screen but could be easily extended with the addition of some extra xml layout files.
 
+There is a splash screen with simple animation, a menu for game options which displays game configuration in compound relative layout buttons. A user can play an easy, medium or hard game as O or X against an A.I opponent.
 
-This application contains 3 activities:
+The AI uses a minimax algorithm with alpha-beta pruning and hueristics to generate moves for a medium or hard game. The easy opponent will take a random turn. If a winning move is available the AI player will always take it.
 
-Splash screen activity, Menu activity and Game activity.
+The screen can be rotated only in the GameActivity, The screen is locked on portrait for the other two activities. Saving and restoring state for a screen rotation is done by storing game state to a private file.
 
-A recursive minimax algorithm is used to determine computer moves in the game.
+This tic tac toe game is a complete implementation which can easily be run on device or emulator.
 
-Application also  contains examples of alert dialog, compound buttons, saving game state on rotation of screen and some simple animations
-
-This tic tac toe was built and using 4.4.2 SDK and tested on Samsung Galaxy S3 running Android 4.3 Jelly Bean. The application does not support different sizes screens, it is designed for the S3.
