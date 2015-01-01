@@ -9,5 +9,5 @@ The AI uses a minimax algorithm with alpha-beta pruning and hueristics to genera
 
 The screen can be rotated only in the GameActivity, The screen is locked on portrait for the other two activities. Saving and restoring state for a screen rotation is done by storing game state to a private file.
 
-This tic tac toe game is a complete implementation which can easily be run on device or emulator.
+This tic tac toe game is a complete Eclipse project which can easily be run on device or emulator from Eclipse. 
 
